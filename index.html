@@ -1,1 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Флешка</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+        .container label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .container input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .container button[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .container button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Добро пожаловать на Веб-Флешку!</h1>
+        <h2>Введите идентификатор пользователя</h2>
+        <form id="userIdForm">
+            <label for="userIdInput">Идентификатор пользователя:</label>
+            <input type="text" id="userIdInput" name="userId" placeholder="Введите идентификатор">
+            <button type="submit">Отправить</button>
+        </form>
+        <p>По всем вопросам обращайтесь  <a href="https://t.me/BerlandborBlog">сюда</a> </p>
+    
+        <div class="error-message" id="errorMessage"></div>
+        <div>Auto Refresh in <span id="countdown">30</span> seconds</div>
+    </div>
 
+    <script>
+        let countdown = 30;
+
+        function updateCountdown() {
+          if (countdown > 0) {
+            countdown--;
+            document.getElementById('countdown').innerText = countdown;
+          } else {
+            location.reload();
+          }
+        }
+
+        // Обновляем счетчик каждую секунду
+        setInterval(updateCountdown, 1000);
+
+        document.getElementById("userIdForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+            var userId = document.getElementById("userIdInput").value.trim();
+
+            var regex = /[^\w\s]/g; // Регулярное выражение для поиска любых символов, кроме букв, цифр и пробелов
+            if (regex.test(userId)) {
+                document.getElementById("errorMessage").textContent = "Ошибка: Идентификатор пользователя не должен содержать специальные символы.";
+            } else {
+                window.location.href = "/?user_id=" + encodeURIComponent(userId);
+            }
+        });
+    </script>
+</body>
+</html>
